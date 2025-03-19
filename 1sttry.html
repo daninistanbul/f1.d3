@@ -101,12 +101,10 @@
         const driverName = item.textContent;
         const index = selectedDrivers.indexOf(driverName);
 
+        // Top 10 selection
         if (index !== -1) {
-          // Remove from top 10 if already selected
-          if (index < 10) {
-            selectedDrivers.splice(index, 1);
-            item.classList.remove("selected");
-          }
+          selectedDrivers.splice(index, 1);
+          item.classList.remove("selected");
         } else {
           if (selectedDrivers.length < 10) {
             selectedDrivers.push(driverName);
@@ -117,8 +115,9 @@
         updateOutput();
       });
 
-      // Allow repeated names for qualification and best lap
-      item.addEventListener("click", (e) => {
+      // Separate handling for qualification and best lap
+      item.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
         const driverName = item.textContent;
 
         if (!qualification) {
@@ -133,12 +132,15 @@
 
     function updateOutput() {
       let output = "";
+
+      // Display top 10
       for (let i = 0; i < selectedDrivers.length; i++) {
         if (selectedDrivers[i]) {
           output += `${selectedDrivers[i]}\n`;
         }
       }
 
+      // Display qualification and best lap
       if (qualification) output += `${qualification}\n`;
       if (bestLap) output += `${bestLap}`;
 
