@@ -29,4 +29,166 @@
         .driver {
             padding: 5px 10px;
             background-color: #007bff;
-            color
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: left;
+        }
+        .driver.selected {
+            background-color: #0056b3;
+        }
+        .selections {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        label {
+            margin-top: 10px;
+        }
+        select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        textarea {
+            resize: none;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="drivers-list" id="driversList">
+            <!-- Driver buttons will be inserted here -->
+        </div>
+        <div class="selections">
+            <label for="qualification">Победитель квалификации:</label>
+            <select id="qualification">
+                <option value="">—</option>
+            </select>
+            <label for="fastestLap">Лучший круг:</label>
+            <select id="fastestLap">
+                <option value="">—</option>
+            </select>
+            <label for="output">Результат:</label>
+            <textarea id="output" rows="12" readonly></textarea>
+            <button type="button" onclick="copyOutput()">Скопировать результат</button>
+        </div>
+    </div>
+
+    <script>
+        // Updated 2025 driver lineup (only last names in Russian)
+        const drivers = [
+            'Норрис', 'Пиастри', // McLaren
+            'Леклер', 'Хэмилтон', // Ferrari
+            'Ферстаппен', 'Лоусон', // Red Bull Racing
+            'Расселл', 'Антонелли', // Mercedes
+            'Стролл', 'Алонсо', // Aston Martin
+            'Гасли', 'Дуэн', // Alpine
+            'Окон', 'Беарман', // Haas
+            'Цунода', 'Хаджар', // Racing Bulls
+            'Албон', 'Сайнс', // Williams
+            'Хюлькенберг', 'Бортолето' // Kick Sauber
+        ];
+
+        const selectedDrivers = new Set();
+        const driversList = document.getElementById('driversList');
+        const qualificationSelect = document.getElementById('qualification');
+        const fastestLapSelect = document.getElementById('fastestLap');
+        const outputTextarea = document.getElementById('output');
+
+        // Populate driver buttons
+        drivers.forEach(driver => {
+            const button = document.createElement('button');
+            button.textContent = driver;
+            button.className = 'driver';
+            button.onclick = () => selectDriver(driver, button);
+            driversList.appendChild(button);
+        });
+
+        // Populate qualification and fastest lap selectors
+        populateSelectOptions(qualificationSelect, drivers);
+        populateSelectOptions(fastestLapSelect, drivers);
+
+        function populateSelectOptions(selectElement, drivers) {
+            drivers.forEach(driver => {
+                const option = document.createElement('option');
+                option.value = driver;
+                option.textContent = driver;
+                selectElement.appendChild(option);
+            });
+        }
+
+        function selectDriver(driver, button) {
+            if (selectedDrivers.has(driver)) {
+                selectedDrivers.delete(driver);
+                button.classList.remove('selected');
+            } else {
+                if (selectedDrivers.size < 10) {
+                    selectedDrivers.add(driver);
+                    button.classList.add('selected');
+                } else {
+                    alert('Вы уже выбрали 10 гонщиков.');
+                }
+            }
+            updateOutput();
+        }
+
+        function updateOutput() {
+            const driversArray = Array.from(selectedDrivers);
+            let output = '';
+            driversArray.forEach(driver => {
+                output += `${driver}\n`; // Removed numbering
+            });
+
+            // Add a blank line after top drivers
+            if (driversArray.length > 0) {
+                output += `\n`; 
+            }
+
+            outputTextarea.value = output.trim();
+        }
+
+        function copyOutput() {
+            // Allow any number of drivers (no longer strict about 10)
+            const qualificationWinner = qualificationSelect.value;
+            const fastestLapHolder = fastestLapSelect.value;
+
+            let output = outputTextarea.value;
+            
+            // Add a blank line before К and ЛК if they are selected
+            if (qualificationWinner || fastestLapHolder) {
+                output += `\n`; 
+            }
+
+            if (qualificationWinner) {
+                output += `К ${qualificationWinner}\n`;
+            }
+
+            if (fastestLapHolder) {
+                output += `ЛК ${fastestLapHolder}`;
+            }
+
+            outputTextarea.value = output.trim();
+            outputTextarea.select();
+            document.execCommand('copy');
+            alert('Результат скопирован в буфер обмена.');
+        }
+    </script>
+</body>
+</html>
