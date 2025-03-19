@@ -92,7 +92,9 @@
   </div>
 
   <script>
-    const selectedDrivers = Array(12).fill(null);
+    const selectedDrivers = [];
+    let qualification = null;
+    let bestLap = null;
 
     document.querySelectorAll(".driver-list li").forEach((item) => {
       item.addEventListener("click", () => {
@@ -100,19 +102,15 @@
         const index = selectedDrivers.indexOf(driverName);
 
         if (index !== -1) {
-          // Remove from the top 10 if already selected
-          if (index < 10) {
-            selectedDrivers[index] = null;
-            item.classList.remove("selected");
-          }
+          // Remove if already selected
+          selectedDrivers.splice(index, 1);
+          item.classList.remove("selected");
         } else {
-          // Add to the top 10 if not already selected
-          const firstEmptyIndex = selectedDrivers.indexOf(null);
-          if (firstEmptyIndex !== -1 && firstEmptyIndex < 10) {
-            selectedDrivers[firstEmptyIndex] = driverName;
+          if (selectedDrivers.length < 10) {
+            selectedDrivers.push(driverName);
             item.classList.add("selected");
           } else {
-            alert("Вы можете выбрать только 10 гонщиков.");
+            alert("Вы можете выбрать только 10 гонщиков в топе + К и ЛК.");
           }
         }
         updateOutput();
@@ -123,10 +121,10 @@
         e.preventDefault();
         const driverName = item.textContent;
 
-        if (!selectedDrivers[10]) {
-          selectedDrivers[10] = `К. ${driverName}`;
-        } else if (!selectedDrivers[11]) {
-          selectedDrivers[11] = `ЛК. ${driverName}`;
+        if (!qualification) {
+          qualification = `К. ${driverName}`;
+        } else if (!bestLap) {
+          bestLap = `ЛК. ${driverName}`;
         } else {
           alert("К и ЛК уже заполнены.");
         }
@@ -137,15 +135,14 @@
 
     function updateOutput() {
       let output = "";
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < selectedDrivers.length; i++) {
         if (selectedDrivers[i]) {
           output += `${selectedDrivers[i]}\n`;
         }
       }
 
-      // Qualification and Best Lap (can repeat names)
-      if (selectedDrivers[10]) output += `${selectedDrivers[10]}\n`;
-      if (selectedDrivers[11]) output += `${selectedDrivers[11]}`;
+      if (qualification) output += `${qualification}\n`;
+      if (bestLap) output += `${bestLap}`;
 
       document.getElementById("output").value = output;
     }
