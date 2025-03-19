@@ -111,8 +111,6 @@
           if (selectedDrivers.length < 10) {
             selectedDrivers.push(driverName);
             item.classList.add("selected");
-          } else {
-            alert("Вы уже выбрали 10 гонщиков.");
           }
         }
 
@@ -120,16 +118,13 @@
       });
 
       // Allow repeated names for qualification and best lap
-      item.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
+      item.addEventListener("click", (e) => {
         const driverName = item.textContent;
 
         if (!qualification) {
           qualification = `К ${driverName}`;
         } else if (!bestLap) {
           bestLap = `ЛК ${driverName}`;
-        } else {
-          alert("К и ЛК уже заполнены.");
         }
 
         updateOutput();
