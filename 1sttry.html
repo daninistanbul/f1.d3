@@ -86,7 +86,7 @@
     </ul>
 
     <div>
-      <div class="output-container" id="output"></div>
+      <textarea class="output-container" id="output" readonly></textarea>
       <button onclick="copyToClipboard()">Копировать в буфер обмена</button>
     </div>
   </div>
@@ -97,14 +97,21 @@
     document.querySelectorAll(".driver-list li").forEach((item) => {
       item.addEventListener("click", () => {
         const driverName = item.textContent;
+        const index = selectedDrivers.indexOf(driverName);
 
-        // Add to top 10 only if not already selected
-        if (!selectedDrivers.slice(0, 10).includes(driverName)) {
+        if (index !== -1) {
+          // Remove from the top 10 if already selected
+          if (index < 10) {
+            selectedDrivers[index] = null;
+            item.classList.remove("selected");
+          }
+        } else {
+          // Add to the top 10 if not already selected
           const firstEmptyIndex = selectedDrivers.indexOf(null);
           if (firstEmptyIndex !== -1 && firstEmptyIndex < 10) {
             selectedDrivers[firstEmptyIndex] = driverName;
             item.classList.add("selected");
-          } else if (firstEmptyIndex === -1) {
+          } else {
             alert("Вы можете выбрать только 10 гонщиков.");
           }
         }
@@ -116,9 +123,9 @@
         e.preventDefault();
         const driverName = item.textContent;
 
-        if (selectedDrivers[10] === null) {
+        if (!selectedDrivers[10]) {
           selectedDrivers[10] = `К. ${driverName}`;
-        } else if (selectedDrivers[11] === null) {
+        } else if (!selectedDrivers[11]) {
           selectedDrivers[11] = `ЛК. ${driverName}`;
         } else {
           alert("К и ЛК уже заполнены.");
@@ -140,11 +147,11 @@
       if (selectedDrivers[10]) output += `${selectedDrivers[10]}\n`;
       if (selectedDrivers[11]) output += `${selectedDrivers[11]}`;
 
-      document.getElementById("output").textContent = output;
+      document.getElementById("output").value = output;
     }
 
     function copyToClipboard() {
-      const output = document.getElementById("output").textContent;
+      const output = document.getElementById("output").value;
       navigator.clipboard.writeText(output).then(() => {
         alert("Скопировано в буфер обмена!");
       }).catch(err => {
