@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>F1 Driver Selector</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Выбор гонщиков Формулы-1 2025</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
       padding: 20px;
+    }
+    .team {
+      margin-bottom: 20px;
+    }
+    .team-name {
+      font-weight: bold;
+      margin-top: 10px;
     }
     .driver-list {
       list-style: none;
@@ -32,21 +39,96 @@
       border: 1px solid #ccc;
       min-height: 40px;
     }
+    .selected {
+      background-color: #a0e7a0;
+    }
   </style>
 </head>
 <body>
-  <h1>Select F1 Drivers</h1>
-  <ul class="driver-list" id="driverList">
-    <li>Max Verstappen</li>
-    <li>Lewis Hamilton</li>
-    <li>Charles Leclerc</li>
-    <li>Sergio Perez</li>
-    <li>George Russell</li>
-    <li>Carlos Sainz</li>
-  </ul>
+  <h1>Выбор гонщиков Формулы-1 2025</h1>
+
+  <div class="team">
+    <div class="team-name">McLaren</div>
+    <ul class="driver-list">
+      <li>Ландо Норрис</li>
+      <li>Оскар Пиастри</li>
+    </ul>
+  </div>
+
+  <div class="team">
+    <div class="team-name">Ferrari</div>
+    <ul class="driver-list">
+      <li>Льюис Хэмилтон</li>
+      <li>Шарль Леклер</li>
+    </ul>
+  </div>
+
+  <div class="team">
+    <div class="team-name">Red Bull</div>
+    <ul class="driver-list">
+      <li>Лиам Лоусон</li>
+      <li>Макс Ферстаппен</li>
+    </ul>
+  </div>
+
+  <div class="team">
+    <div class="team-name">Mercedes</div>
+    <ul class="driver-list">
+      <li>Андреа Кими Антонелли</li>
+      <li>Джордж Расселл</li>
+    </ul>
+  </div>
+
+  <div class="team">
+    <div class="team-name">Aston Martin</div>
+    <ul class="driver-list">
+      <li>Лэнс Стролл</li>
+      <li>Фернандо Алонсо</li>
+    </ul>
+  </div>
+
+  <div class="team">
+    <div class="team-name">Alpine</div>
+    <ul class="driver-list">
+      <li>Джек Дуэн</li>
+      <li>Пьер Гасли</li>
+    </ul>
+  </div>
+
+  <div class="team">
+    <div class "team-name">Haas</div>
+    <ul class="driver-list">
+      <li>Оливер Беарман</li>
+      <li>Эстебан Окон</li>
+    </ul>
+  </div>
+
+  <div class="team">
+    <div class="team-name">Racing Bulls</div>
+    <ul class="driver-list">
+      <li>Исак Хаджар</li>
+      <li>Юки Цунода</li>
+    </ul>
+  </div>
+
+  <div class="team">
+    <div class="team-name">Williams</div>
+    <ul class="driver-list">
+      <li>Александер Албон</li>
+      <li>Карлос Сайнс</li>
+    </ul>
+  </div>
+
+  <div class="team">
+    <div class="team-name">Kick Sauber</div>
+    <ul class="driver-list">
+      <li>Габриэл Бортолето</li>
+      <li>Нико Хюлькенберг</li>
+    </ul>
+  </div>
 
   <div>
-    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    <button onclick="copyToClipboard()">Копировать в буфер обмена</button>
     <div id="output"></div>
   </div>
 
@@ -55,23 +137,13 @@
 
     document.querySelectorAll(".driver-list li").forEach((item) => {
       item.addEventListener("click", () => {
-        if (!selectedDrivers.includes(item.textContent)) {
-          selectedDrivers.push(item.textContent);
-          updateOutput();
-        }
-      });
-    });
-
-    function updateOutput() {
-      document.getElementById("output").textContent = selectedDrivers.join(", ");
-    }
-
-    function copyToClipboard() {
-      const output = document.getElementById("output").textContent;
-      navigator.clipboard.writeText(output).then(() => {
-        alert("Copied to clipboard!");
-      });
-    }
-  </script>
-</body>
-</html>
+        const driverName = item.textContent;
+        const index = selectedDrivers.indexOf(driverName);
+        if (index === -1) {
+          if (selectedDrivers.length < 12) {
+            selectedDrivers.push(driverName);
+            item.classList.add("selected");
+          } else {
+            alert("Вы можете выбрать
+::contentReference[oaicite:7]{index=7}
+ 
