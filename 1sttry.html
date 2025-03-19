@@ -110,9 +110,9 @@
             selectedDrivers.push(driverName);
             item.classList.add("selected");
           } else if (!qualification) {
-            qualification = `К. ${driverName}`;
+            qualification = `К ${driverName}`;
           } else if (!bestLap) {
-            bestLap = `ЛК. ${driverName}`;
+            bestLap = `ЛК ${driverName}`;
           } else {
             alert("Вы уже выбрали 10 гонщиков, К и ЛК.");
           }
