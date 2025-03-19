@@ -10,49 +10,53 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
+            display: flex;
+            justify-content: center;
         }
         .container {
-            max-width: 600px;
-            margin: 0 auto;
+            display: flex;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            text-align: center;
-        }
         .drivers-list {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            flex-direction: column;
+            gap: 5px;
+            margin-right: 20px;
         }
         .driver {
-            padding: 10px 15px;
+            padding: 5px 10px;
             background-color: #007bff;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
+            text-align: left;
         }
         .driver.selected {
             background-color: #0056b3;
         }
+        .selections {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
         label {
-            display: block;
-            margin-top: 15px;
+            margin-top: 10px;
         }
         select, textarea {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
+            padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        textarea {
+            resize: none;
+        }
         button {
-            width: 100%;
             padding: 10px;
             background-color: #28a745;
             color: #fff;
@@ -60,7 +64,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #218838;
@@ -69,35 +73,36 @@
 </head>
 <body>
     <div class="container">
-        <h1>Выбор лучших гонщиков Формулы-1 2025</h1>
         <div class="drivers-list" id="driversList">
             <!-- Driver buttons will be inserted here -->
         </div>
-        <label for="qualification">Выберите победителя квалификации (К):</label>
-        <select id="qualification">
-            <!-- Options will be inserted here -->
-        </select>
-        <label for="fastestLap">Выберите обладателя быстрейшего круга (ЛК):</label>
-        <select id="fastestLap">
-            <!-- Options will be inserted here -->
-        </select>
-        <label for="output">Результат:</label>
-        <textarea id="output" rows="12" readonly></textarea>
-        <button type="button" onclick="generateOutput()">Скопировать результат</button>
+        <div class="selections">
+            <label for="qualification">Выберите победителя квалификации (К):</label>
+            <select id="qualification">
+                <!-- Options will be inserted here -->
+            </select>
+            <label for="fastestLap">Выберите обладателя быстрейшего круга (ЛК):</label>
+            <select id="fastestLap">
+                <!-- Options will be inserted here -->
+            </select>
+            <label for="output">Результат:</label>
+            <textarea id="output" rows="12" readonly></textarea>
+            <button type="button" onclick="copyOutput()">Скопировать результат</button>
+        </div>
     </div>
 
     <script>
         const drivers = [
-            'Норрис', 'Пиастри', // McLaren
-            'Сайнс', 'Леклер', // Ferrari
-            'Ферстаппен', 'Перес', // Red Bull Racing
-            'Расселл', 'Хэмилтон', // Mercedes
-            'Албон', 'Сарджент', // Williams
-            'Алонсо', 'Стролл', // Aston Martin
-            'Хюлькенберг', 'Магнуссен', // Haas
-            'Гасли', 'Окон', // Alpine
-            'Боттас', 'Чжоу', // Alfa Romeo
-            'Цунода', 'Риккардо' // AlphaTauri
+            'Ландо Норрис', 'Оскар Пиастри', // McLaren
+            'Джордж Расселл', 'Андреа Кими Антонелли', // Mercedes
+            'Макс Ферстаппен', 'Лиам Лоусон', // Red Bull Racing
+            'Александр Албон', 'Карлос Сайнс', // Williams
+            'Лэнс Стролл', 'Фернандо Алонсо', // Aston Martin
+            'Нико Хюлькенберг', 'Габриэль Бортолето', // Kick Sauber
+            'Шарль Леклер', 'Льюис Хэмилтон', // Ferrari
+            'Пьер Гасли', 'Джек Дуэн', // Alpine
+            'Юки Цунода', 'Исак Хаджар', // Racing Bulls
+            'Эстебан Окон', 'Оливер Беарман' // Haas
         ];
 
         const selectedDrivers = new Set();
@@ -152,7 +157,7 @@
             outputTextarea.value = output.trim();
         }
 
-        function generateOutput() {
+        function copyOutput() {
             if (selectedDrivers.size !== 10) {
                 alert('Пожалуйста, выберите ровно 10 гонщиков.');
                 return;
