@@ -10,13 +10,6 @@
       background-color: #f4f4f4;
       padding: 20px;
     }
-    .team {
-      margin-bottom: 20px;
-    }
-    .team-name {
-      font-weight: bold;
-      margin-top: 10px;
-    }
     .driver-list {
       list-style: none;
       padding: 0;
@@ -32,6 +25,9 @@
     .driver-list li:hover {
       background-color: #ccc;
     }
+    .selected {
+      background-color: #a0e7a0;
+    }
     #output {
       margin-top: 20px;
       padding: 10px;
@@ -39,93 +35,33 @@
       border: 1px solid #ccc;
       min-height: 40px;
     }
-    .selected {
-      background-color: #a0e7a0;
-    }
   </style>
 </head>
 <body>
   <h1>Выбор гонщиков Формулы-1 2025</h1>
 
-  <div class="team">
-    <div class="team-name">McLaren</div>
-    <ul class="driver-list">
-      <li>Ландо Норрис</li>
-      <li>Оскар Пиастри</li>
-    </ul>
-  </div>
-
-  <div class="team">
-    <div class="team-name">Ferrari</div>
-    <ul class="driver-list">
-      <li>Льюис Хэмилтон</li>
-      <li>Шарль Леклер</li>
-    </ul>
-  </div>
-
-  <div class="team">
-    <div class="team-name">Red Bull</div>
-    <ul class="driver-list">
-      <li>Лиам Лоусон</li>
-      <li>Макс Ферстаппен</li>
-    </ul>
-  </div>
-
-  <div class="team">
-    <div class="team-name">Mercedes</div>
-    <ul class="driver-list">
-      <li>Андреа Кими Антонелли</li>
-      <li>Джордж Расселл</li>
-    </ul>
-  </div>
-
-  <div class="team">
-    <div class="team-name">Aston Martin</div>
-    <ul class="driver-list">
-      <li>Лэнс Стролл</li>
-      <li>Фернандо Алонсо</li>
-    </ul>
-  </div>
-
-  <div class="team">
-    <div class="team-name">Alpine</div>
-    <ul class="driver-list">
-      <li>Джек Дуэн</li>
-      <li>Пьер Гасли</li>
-    </ul>
-  </div>
-
-  <div class="team">
-    <div class "team-name">Haas</div>
-    <ul class="driver-list">
-      <li>Оливер Беарман</li>
-      <li>Эстебан Окон</li>
-    </ul>
-  </div>
-
-  <div class="team">
-    <div class="team-name">Racing Bulls</div>
-    <ul class="driver-list">
-      <li>Исак Хаджар</li>
-      <li>Юки Цунода</li>
-    </ul>
-  </div>
-
-  <div class="team">
-    <div class="team-name">Williams</div>
-    <ul class="driver-list">
-      <li>Александер Албон</li>
-      <li>Карлос Сайнс</li>
-    </ul>
-  </div>
-
-  <div class="team">
-    <div class="team-name">Kick Sauber</div>
-    <ul class="driver-list">
-      <li>Габриэл Бортолето</li>
-      <li>Нико Хюлькенберг</li>
-    </ul>
-  </div>
+  <ul class="driver-list">
+    <li>Норрис</li>
+    <li>Пиастри</li>
+    <li>Хэмилтон</li>
+    <li>Леклер</li>
+    <li>Лоусон</li>
+    <li>Ферстаппен</li>
+    <li>Антонелли</li>
+    <li>Расселл</li>
+    <li>Стролл</li>
+    <li>Алонсо</li>
+    <li>Дуэн</li>
+    <li>Гасли</li>
+    <li>Беарман</li>
+    <li>Окон</li>
+    <li>Хаджар</li>
+    <li>Цунода</li>
+    <li>Албон</li>
+    <li>Сайнс</li>
+    <li>Бортолето</li>
+    <li>Хюлькенберг</li>
+  </ul>
 
   <div>
     <button onclick="copyToClipboard()">Копировать в буфер обмена</button>
@@ -144,6 +80,23 @@
             selectedDrivers.push(driverName);
             item.classList.add("selected");
           } else {
-            alert("Вы можете выбрать
-::contentReference[oaicite:7]{index=7}
- 
+            alert("Вы можете выбрать только 12 гонщиков.");
+          }
+        } else {
+          selectedDrivers.splice(index, 1);
+          item.classList.remove("selected");
+        }
+        updateOutput();
+      });
+    });
+
+    function updateOutput() {
+      document.getElementById("output").textContent = selectedDrivers.join(", ");
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById("output").textContent;
+      navigator.clipboard.writeText(output).then(() => {
+        alert("Скопировано в буфер обмена!");
+      }).catch(err => {
+        alert
