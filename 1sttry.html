@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пилоты 2025 для f1.d3.ru</title>
+    <title>Прогноз f1.d3.ru</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,18 +19,19 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
         }
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
         }
         .drivers-list {
             display: flex;
             flex-direction: column;
-            gap: 2px; /* Reduced gap between buttons */
-            margin-bottom: 20px;
+            gap: 2px; /* Reduced gap by half */
+            margin-right: 20px;
         }
         .driver {
             padding: 5px 10px;
@@ -41,6 +42,7 @@
             cursor: pointer;
             font-size: 14px;
             text-align: left;
+            transition: background-color 0.2s ease;
         }
         .driver.selected {
             background-color: #0056b3;
@@ -48,8 +50,8 @@
         .selections {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            width: 100%;
+            gap: 10px;
+            width: 250px;
         }
         label {
             margin-top: 5px;
@@ -64,6 +66,7 @@
             resize: none;
             height: 180px;
             font-size: 14px;
+            white-space: pre-wrap; /* Keeps formatting in clipboard */
         }
         button {
             padding: 10px;
@@ -74,6 +77,7 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: 10px;
+            transition: background-color 0.2s ease;
         }
         button:hover {
             background-color: #218838;
@@ -82,9 +86,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Прогноз на f1.d3.ru</h1>
-        <div class="drivers-list" id="driversList">
-            <!-- Driver buttons will be inserted here -->
+        <div>
+            <h1>Прогноз f1.d3.ru</h1>
+            <div class="drivers-list" id="driversList">
+                <!-- Driver buttons will be inserted here -->
+            </div>
         </div>
         <div class="selections">
             <label for="qualification">Победитель квалификации:</label>
@@ -166,9 +172,9 @@
                 output += `${driver}\n`; // Removed numbering
             });
 
-            // Add a blank line after top drivers
+            // Add a blank line after top drivers (for clipboard)
             if (driversArray.length > 0) {
-                output += `\n`; 
+                output += `\n`;
             }
 
             outputTextarea.value = output.trim();
