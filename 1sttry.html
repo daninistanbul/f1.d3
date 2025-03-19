@@ -169,3 +169,30 @@
     });
 
     function updateOutput() {
+      let output = "";
+
+      // Display top 10
+      for (let i = 0; i < selectedDrivers.length; i++) {
+        if (selectedDrivers[i]) {
+          output += `${selectedDrivers[i]}\n`;
+        }
+      }
+
+      // Display qualification and best lap
+      if (qualification) output += `${qualification}\n`;
+      if (bestLap) output += `${bestLap}`;
+
+      document.getElementById("output").value = output;
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById("output").value;
+      navigator.clipboard.writeText(output).then(() => {
+        alert("Скопировано в буфер обмена!");
+      }).catch(err => {
+        alert("Ошибка копирования: " + err);
+      });
+    }
+  </script>
+</body>
+</html>
