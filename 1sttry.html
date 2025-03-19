@@ -109,24 +109,13 @@
           if (selectedDrivers.length < 10) {
             selectedDrivers.push(driverName);
             item.classList.add("selected");
+          } else if (!qualification) {
+            qualification = `К. ${driverName}`;
+          } else if (!bestLap) {
+            bestLap = `ЛК. ${driverName}`;
           } else {
-            alert("Вы можете выбрать только 10 гонщиков в топе + К и ЛК.");
+            alert("Вы уже выбрали 10 гонщиков, К и ЛК.");
           }
-        }
-        updateOutput();
-      });
-
-      // Right-click to assign to К or ЛК
-      item.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-        const driverName = item.textContent;
-
-        if (!qualification) {
-          qualification = `К. ${driverName}`;
-        } else if (!bestLap) {
-          bestLap = `ЛК. ${driverName}`;
-        } else {
-          alert("К и ЛК уже заполнены.");
         }
 
         updateOutput();
