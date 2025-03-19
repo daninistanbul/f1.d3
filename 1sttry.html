@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F1 Driver Selector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .driver-list {
+      list-style: none;
+      padding: 0;
+    }
+    .driver-list li {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #ddd;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    .driver-list li:hover {
+      background-color: #ccc;
+    }
+    #output {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      min-height: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Select F1 Drivers</h1>
+  <ul class="driver-list" id="driverList">
+    <li>Max Verstappen</li>
+    <li>Lewis Hamilton</li>
+    <li>Charles Leclerc</li>
+    <li>Sergio Perez</li>
+    <li>George Russell</li>
+    <li>Carlos Sainz</li>
+  </ul>
+
+  <div>
+    <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    const selectedDrivers = [];
+
+    document.querySelectorAll(".driver-list li").forEach((item) => {
+      item.addEventListener("click", () => {
+        if (!selectedDrivers.includes(item.textContent)) {
+          selectedDrivers.push(item.textContent);
+          updateOutput();
+        }
+      });
+    });
+
+    function updateOutput() {
+      document.getElementById("output").textContent = selectedDrivers.join(", ");
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById("output").textContent;
+      navigator.clipboard.writeText(output).then(() => {
+        alert("Copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>
