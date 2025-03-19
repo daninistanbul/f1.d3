@@ -130,8 +130,8 @@
         }
       }
 
-      if (qualification) output += `${qualification}\n`;
-      if (bestLap) output += `${bestLap}`;
+      if (qualification) output += `К ${qualification.replace('К ', '')}\n`;
+      if (bestLap) output += `ЛК ${bestLap.replace('ЛК ', '')}`;
 
       document.getElementById("output").value = output;
     }
