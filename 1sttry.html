@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Выбираем пилотов для f1.d3.ru</title>
+    <title>Пилоты 2025 для f1.d3.ru</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -77,11 +77,11 @@
             <!-- Driver buttons will be inserted here -->
         </div>
         <div class="selections">
-            <label for="qualification">Выберите победителя квалификации (К):</label>
+            <label for="qualification">Победитель квалификации:</label>
             <select id="qualification">
                 <!-- Options will be inserted here -->
             </select>
-            <label for="fastestLap">Выберите обладателя быстрейшего круга (ЛК):</label>
+            <label for="fastestLap">Лучший круг:</label>
             <select id="fastestLap">
                 <!-- Options will be inserted here -->
             </select>
@@ -92,17 +92,18 @@
     </div>
 
     <script>
+        // Updated 2025 driver lineup (only last names in Russian)
         const drivers = [
-            'Ландо Норрис', 'Оскар Пиастри', // McLaren
-            'Джордж Расселл', 'Андреа Кими Антонелли', // Mercedes
-            'Макс Ферстаппен', 'Лиам Лоусон', // Red Bull Racing
-            'Александр Албон', 'Карлос Сайнс', // Williams
-            'Лэнс Стролл', 'Фернандо Алонсо', // Aston Martin
-            'Нико Хюлькенберг', 'Габриэль Бортолето', // Kick Sauber
-            'Шарль Леклер', 'Льюис Хэмилтон', // Ferrari
-            'Пьер Гасли', 'Джек Дуэн', // Alpine
-            'Юки Цунода', 'Исак Хаджар', // Racing Bulls
-            'Эстебан Окон', 'Оливер Беарман' // Haas
+            'Норрис', 'Пиастри', // McLaren
+            'Леклер', 'Хэмилтон', // Ferrari
+            'Ферстаппен', 'Лоусон', // Red Bull Racing
+            'Расселл', 'Антонелли', // Mercedes
+            'Стролл', 'Алонсо', // Aston Martin
+            'Гасли', 'Дуэн', // Alpine
+            'Окон', 'Беарман' // Haas
+            'Цунода', 'Хаджар', // Racing Bulls
+            'Албон', 'Сайнс', // Williams
+            'Хюлькенберг', 'Бортолето', // Kick Sauber            
         ];
 
         const selectedDrivers = new Set();
@@ -151,8 +152,8 @@
         function updateOutput() {
             const driversArray = Array.from(selectedDrivers);
             let output = '';
-            driversArray.forEach((driver, index) => {
-                output += `${index + 1}. ${driver}\n`;
+            driversArray.forEach(driver => {
+                output += `${driver}\n`; // Removed numbering
             });
             outputTextarea.value = output.trim();
         }
@@ -167,8 +168,8 @@
             const fastestLapHolder = fastestLapSelect.value;
 
             let output = outputTextarea.value;
-            output += `\n11. К ${qualificationWinner}`;
-            output += `\n12. ЛК ${fastestLapHolder}`;
+            output += `\nК ${qualificationWinner}`;
+            output += `\nЛК ${fastestLapHolder}`;
 
             outputTextarea.value = output.trim();
             outputTextarea.select();
