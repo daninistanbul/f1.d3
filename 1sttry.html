@@ -102,9 +102,11 @@
         const index = selectedDrivers.indexOf(driverName);
 
         if (index !== -1) {
-          // Remove if already selected
-          selectedDrivers.splice(index, 1);
-          item.classList.remove("selected");
+          // Remove if already selected in top 10
+          if (index < 10) {
+            selectedDrivers.splice(index, 1);
+            item.classList.remove("selected");
+          }
         } else {
           if (selectedDrivers.length < 10) {
             selectedDrivers.push(driverName);
@@ -130,8 +132,8 @@
         }
       }
 
-      if (qualification) output += `К ${qualification.replace('К ', '')}\n`;
-      if (bestLap) output += `ЛК ${bestLap.replace('ЛК ', '')}`;
+      if (qualification) output += `${qualification}\n`;
+      if (bestLap) output += `${bestLap}`;
 
       document.getElementById("output").value = output;
     }
