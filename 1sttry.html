@@ -9,10 +9,17 @@
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
       padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      display: flex;
+      gap: 20px;
     }
     .driver-list {
       list-style: none;
       padding: 0;
+      width: 200px;
     }
     .driver-list li {
       padding: 10px;
@@ -21,6 +28,7 @@
       cursor: pointer;
       border-radius: 5px;
       transition: background 0.3s;
+      text-align: center;
     }
     .driver-list li:hover {
       background-color: #ccc;
@@ -28,44 +36,59 @@
     .selected {
       background-color: #a0e7a0;
     }
-    #output {
-      margin-top: 20px;
+    .output-container {
+      width: 200px;
       padding: 10px;
       background-color: #fff;
       border: 1px solid #ccc;
-      min-height: 40px;
+      min-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
-  <h1>Выбор гонщиков Формулы-1 2025</h1>
+  <div class="container">
+    <ul class="driver-list">
+      <li>Норрис</li>
+      <li>Пиастри</li>
+      <li>Хэмилтон</li>
+      <li>Леклер</li>
+      <li>Лоусон</li>
+      <li>Ферстаппен</li>
+      <li>Антонелли</li>
+      <li>Расселл</li>
+      <li>Стролл</li>
+      <li>Алонсо</li>
+      <li>Дуэн</li>
+      <li>Гасли</li>
+      <li>Беарман</li>
+      <li>Окон</li>
+      <li>Хаджар</li>
+      <li>Цунода</li>
+      <li>Албон</li>
+      <li>Сайнс</li>
+      <li>Бортолето</li>
+      <li>Хюлькенберг</li>
+    </ul>
 
-  <ul class="driver-list">
-    <li>Норрис</li>
-    <li>Пиастри</li>
-    <li>Хэмилтон</li>
-    <li>Леклер</li>
-    <li>Лоусон</li>
-    <li>Ферстаппен</li>
-    <li>Антонелли</li>
-    <li>Расселл</li>
-    <li>Стролл</li>
-    <li>Алонсо</li>
-    <li>Дуэн</li>
-    <li>Гасли</li>
-    <li>Беарман</li>
-    <li>Окон</li>
-    <li>Хаджар</li>
-    <li>Цунода</li>
-    <li>Албон</li>
-    <li>Сайнс</li>
-    <li>Бортолето</li>
-    <li>Хюлькенберг</li>
-  </ul>
-
-  <div>
-    <button onclick="copyToClipboard()">Копировать в буфер обмена</button>
-    <div id="output"></div>
+    <div>
+      <div class="output-container" id="output"></div>
+      <button onclick="copyToClipboard()">Копировать в буфер обмена</button>
+    </div>
   </div>
 
   <script>
@@ -91,7 +114,7 @@
     });
 
     function updateOutput() {
-      document.getElementById("output").textContent = selectedDrivers.join(", ");
+      document.getElementById("output").textContent = selectedDrivers.join("\n");
     }
 
     function copyToClipboard() {
@@ -99,4 +122,9 @@
       navigator.clipboard.writeText(output).then(() => {
         alert("Скопировано в буфер обмена!");
       }).catch(err => {
-        alert
+        alert("Ошибка копирования: " + err);
+      });
+    }
+  </script>
+</body>
+</html>
