@@ -22,137 +22,153 @@
         h1 {
             text-align: center;
         }
-        .driver-select {
-            margin-bottom: 15px;
+        .drivers-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .driver {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .driver.selected {
+            background-color: #0056b3;
         }
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-top: 15px;
         }
         select, textarea {
             width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
         button {
             width: 100%;
             padding: 10px;
-            background-color: #007bff;
+            background-color: #28a745;
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 20px;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Выбор лучших гонщиков Формулы-1 2025</h1>
-        <form id="driverForm">
-            <div id="driverSelectors">
-                <!-- Driver selectors will be inserted here -->
-            </div>
-            <label for="qualification">Выберите победителя квалификации (К):</label>
-            <select id="qualification" class="driver-select">
-                <!-- Options will be inserted here -->
-            </select>
-            <label for="fastestLap">Выберите обладателя быстрейшего круга (ЛК):</label>
-            <select id="fastestLap" class="driver-select">
-                <!-- Options will be inserted here -->
-            </select>
-            <label for="output">Результат:</label>
-            <textarea id="output" rows="12" readonly></textarea>
-            <button type="button" onclick="generateOutput()">Сгенерировать результат</button>
-        </form>
+        <div class="drivers-list" id="driversList">
+            <!-- Driver buttons will be inserted here -->
+        </div>
+        <label for="qualification">Выберите победителя квалификации (К):</label>
+        <select id="qualification">
+            <!-- Options will be inserted here -->
+        </select>
+        <label for="fastestLap">Выберите обладателя быстрейшего круга (ЛК):</label>
+        <select id="fastestLap">
+            <!-- Options will be inserted here -->
+        </select>
+        <label for="output">Результат:</label>
+        <textarea id="output" rows="12" readonly></textarea>
+        <button type="button" onclick="generateOutput()">Скопировать результат</button>
     </div>
 
     <script>
-        const driversByTeam = {
-            'McLaren': ['Норрис', 'Пиастри'],
-            'Ferrari': ['Леклер', 'Хэмилтон'],
-            'Red Bull Racing': ['Ферстаппен', 'Лоусон'],
-            'Mercedes': ['Расселл', 'Антонелли'],
-            'Williams': ['Албон', 'Сайнс'],
-            'Aston Martin': ['Алонсо', 'Стролл'],
-            'Kick Sauber': ['Хюлькенберг', 'Бортолето'],
-            'Alpine': ['Гасли', 'Дуэн'],
-            'Racing Bulls': ['Хаджар', 'Цунода'],
-            'Haas': ['Окон', 'Беарман']
-        };
+        const drivers = [
+            'Норрис', 'Пиастри', // McLaren
+            'Сайнс', 'Леклер', // Ferrari
+            'Ферстаппен', 'Перес', // Red Bull Racing
+            'Расселл', 'Хэмилтон', // Mercedes
+            'Албон', 'Сарджент', // Williams
+            'Алонсо', 'Стролл', // Aston Martin
+            'Хюлькенберг', 'Магнуссен', // Haas
+            'Гасли', 'Окон', // Alpine
+            'Боттас', 'Чжоу', // Alfa Romeo
+            'Цунода', 'Риккардо' // AlphaTauri
+        ];
 
-        const driverSelectors = document.getElementById('driverSelectors');
+        const selectedDrivers = new Set();
+        const driversList = document.getElementById('driversList');
         const qualificationSelect = document.getElementById('qualification');
         const fastestLapSelect = document.getElementById('fastestLap');
         const outputTextarea = document.getElementById('output');
 
-        // Populate driver selectors
-        let driverCount = 1;
-        for (const team in driversByTeam) {
-            driversByTeam[team].forEach(driver => {
-                if (driverCount <= 10) {
-                    const label = document.createElement('label');
-                    label.setAttribute('for', 'driver' + driverCount);
-                    label.textContent = `Выберите гонщика №${driverCount}:`;
-                    const select = document.createElement('select');
-                    select.id = 'driver' + driverCount;
-                    select.className = 'driver-select';
-                    populateSelectOptions(select, driversByTeam);
-                    driverSelectors.appendChild(label);
-                    driverSelectors.appendChild(select);
-                    driverCount++;
-                }
+        // Populate driver buttons
+        drivers.forEach(driver => {
+            const button = document.createElement('button');
+            button.textContent = driver;
+            button.className = 'driver';
+            button.onclick = () => selectDriver(driver, button);
+            driversList.appendChild(button);
+        });
+
+        // Populate qualification and fastest lap selectors
+        populateSelectOptions(qualificationSelect, drivers);
+        populateSelectOptions(fastestLapSelect, drivers);
+
+        function populateSelectOptions(selectElement, drivers) {
+            drivers.forEach(driver => {
+                const option = document.createElement('option');
+                option.value = driver;
+                option.textContent = driver;
+                selectElement.appendChild(option);
             });
         }
 
-        // Populate qualification and fastest lap selectors
-        populateSelectOptions(qualificationSelect, driversByTeam);
-        populateSelectOptions(fastestLapSelect, driversByTeam);
-
-        function populateSelectOptions(selectElement, drivers) {
-            for (const team in drivers) {
-                const group = document.createElement('optgroup');
-                group.label = team;
-                drivers[team].forEach(driver => {
-                    const option = document.createElement('option');
-                    option.value = driver;
-                    option.textContent = driver;
-                    group.appendChild(option);
-                });
-                selectElement.appendChild(group);
+        function selectDriver(driver, button) {
+            if (selectedDrivers.has(driver)) {
+                selectedDrivers.delete(driver);
+                button.classList.remove('selected');
+            } else {
+                if (selectedDrivers.size < 10) {
+                    selectedDrivers.add(driver);
+                    button.classList.add('selected');
+                } else {
+                    alert('Вы уже выбрали 10 гонщиков.');
+                }
             }
+            updateOutput();
+        }
+
+        function updateOutput() {
+            const driversArray = Array.from(selectedDrivers);
+            let output = '';
+            driversArray.forEach((driver, index) => {
+                output += `${index + 1}. ${driver}\n`;
+            });
+            outputTextarea.value = output.trim();
         }
 
         function generateOutput() {
-            const selectedDrivers = new Set();
-            let output = '';
-
-            // Get top 10 drivers
-            for (let i = 1; i <= 10; i++) {
-                const driver = document.getElementById('driver' + i).value;
-                if (selectedDrivers.has(driver)) {
-                    alert(`Ошибка: Гонщик ${driver} уже выбран. Пожалуйста, выберите разных гонщиков для позиций 1-10.`);
-                    return;
-                }
-                selectedDrivers.add(driver);
-                output += `${i}. ${driver}\n`;
+            if (selectedDrivers.size !== 10) {
+                alert('Пожалуйста, выберите ровно 10 гонщиков.');
+                return;
             }
 
-            // Get qualification winner
             const qualificationWinner = qualificationSelect.value;
-            output += `11. К ${qualificationWinner}\n`;
-
-            // Get fastest lap holder
             const fastestLapHolder = fastestLapSelect.value;
-            output += `12. ЛК ${fastestLapHolder}\n`;
 
-            // Set output
+            let output = outputTextarea.value;
+            output += `\n11. К ${qualificationWinner}`;
+            output += `\n12. ЛК ${fastestLapHolder}`;
+
             outputTextarea.value = output.trim();
+            outputTextarea.select();
+            document.execCommand('copy');
+            alert('Результат скопирован в буфер обмена.');
         }
     </script>
 </body>
