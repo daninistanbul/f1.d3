@@ -110,31 +110,16 @@
         }
         updateOutput();
       });
-    });
 
-    function updateOutput() {
-      let output = "";
-      for (let i = 0; i < 10; i++) {
-        output += `${i + 1}. ${selectedDrivers[i] || ""}\n`;
-      }
-
-      // Qualification and Best Lap (can repeat names)
-      output += `К. ${selectedDrivers[10] || ""}\n`;
-      output += `ЛК. ${selectedDrivers[11] || ""}`;
-
-      document.getElementById("output").textContent = output;
-    }
-
-    // Allow repeating names for positions К and ЛК
-    document.querySelectorAll(".driver-list li").forEach((item) => {
+      // Right-click to assign to К or ЛК
       item.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         const driverName = item.textContent;
 
         if (selectedDrivers[10] === null) {
-          selectedDrivers[10] = driverName;
+          selectedDrivers[10] = `К. ${driverName}`;
         } else if (selectedDrivers[11] === null) {
-          selectedDrivers[11] = driverName;
+          selectedDrivers[11] = `ЛК. ${driverName}`;
         } else {
           alert("К и ЛК уже заполнены.");
         }
@@ -142,6 +127,21 @@
         updateOutput();
       });
     });
+
+    function updateOutput() {
+      let output = "";
+      for (let i = 0; i < 10; i++) {
+        if (selectedDrivers[i]) {
+          output += `${selectedDrivers[i]}\n`;
+        }
+      }
+
+      // Qualification and Best Lap (can repeat names)
+      if (selectedDrivers[10]) output += `${selectedDrivers[10]}\n`;
+      if (selectedDrivers[11]) output += `${selectedDrivers[11]}`;
+
+      document.getElementById("output").textContent = output;
+    }
 
     function copyToClipboard() {
       const output = document.getElementById("output").textContent;
