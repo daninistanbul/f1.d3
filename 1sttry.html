@@ -102,7 +102,7 @@
         const index = selectedDrivers.indexOf(driverName);
 
         if (index !== -1) {
-          // Remove if already selected in top 10
+          // Remove from top 10 if already selected
           if (index < 10) {
             selectedDrivers.splice(index, 1);
             item.classList.remove("selected");
@@ -111,13 +111,25 @@
           if (selectedDrivers.length < 10) {
             selectedDrivers.push(driverName);
             item.classList.add("selected");
-          } else if (!qualification) {
-            qualification = `К ${driverName}`;
-          } else if (!bestLap) {
-            bestLap = `ЛК ${driverName}`;
           } else {
-            alert("Вы уже выбрали 10 гонщиков, К и ЛК.");
+            alert("Вы уже выбрали 10 гонщиков.");
           }
+        }
+
+        updateOutput();
+      });
+
+      // Allow repeated names for qualification and best lap
+      item.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        const driverName = item.textContent;
+
+        if (!qualification) {
+          qualification = `К ${driverName}`;
+        } else if (!bestLap) {
+          bestLap = `ЛК ${driverName}`;
+        } else {
+          alert("К и ЛК уже заполнены.");
         }
 
         updateOutput();
