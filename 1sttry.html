@@ -92,30 +92,56 @@
   </div>
 
   <script>
-    const selectedDrivers = [];
+    const selectedDrivers = Array(12).fill(null);
 
     document.querySelectorAll(".driver-list li").forEach((item) => {
       item.addEventListener("click", () => {
         const driverName = item.textContent;
-        const index = selectedDrivers.indexOf(driverName);
-        if (index === -1) {
-          if (selectedDrivers.length < 12) {
-            selectedDrivers.push(driverName);
+
+        // Add to top 10 only if not already selected
+        if (!selectedDrivers.slice(0, 10).includes(driverName)) {
+          const firstEmptyIndex = selectedDrivers.indexOf(null);
+          if (firstEmptyIndex !== -1 && firstEmptyIndex < 10) {
+            selectedDrivers[firstEmptyIndex] = driverName;
             item.classList.add("selected");
-          } else {
-            alert("Вы можете выбрать только 12 гонщиков.");
+          } else if (firstEmptyIndex === -1) {
+            alert("Вы можете выбрать только 10 гонщиков.");
           }
-        } else {
-          selectedDrivers.splice(index, 1);
-          item.classList.remove("selected");
         }
         updateOutput();
       });
     });
 
     function updateOutput() {
-      document.getElementById("output").textContent = selectedDrivers.join("\n");
+      let output = "";
+      for (let i = 0; i < 10; i++) {
+        output += `${i + 1}. ${selectedDrivers[i] || ""}\n`;
+      }
+
+      // Qualification and Best Lap (can repeat names)
+      output += `К. ${selectedDrivers[10] || ""}\n`;
+      output += `ЛК. ${selectedDrivers[11] || ""}`;
+
+      document.getElementById("output").textContent = output;
     }
+
+    // Allow repeating names for positions К and ЛК
+    document.querySelectorAll(".driver-list li").forEach((item) => {
+      item.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        const driverName = item.textContent;
+
+        if (selectedDrivers[10] === null) {
+          selectedDrivers[10] = driverName;
+        } else if (selectedDrivers[11] === null) {
+          selectedDrivers[11] = driverName;
+        } else {
+          alert("К и ЛК уже заполнены.");
+        }
+
+        updateOutput();
+      });
+    });
 
     function copyToClipboard() {
       const output = document.getElementById("output").textContent;
