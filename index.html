@@ -108,7 +108,7 @@
     </div>
 
     <script>
-        // 2025 driver lineup (keeping Аджар as requested)
+        // Driver lineup 2025 (with Аджар)
         const drivers = [
             'Норрис', 'Пиастри', // McLaren
             'Леклер', 'Хэмилтон', // Ferrari
@@ -170,7 +170,7 @@
             let output = driversArray.join('\n');
 
             if (driversArray.length > 0) {
-                output += '\n'; // blank line after drivers
+                output += '\n'; // Blank line after drivers
             }
 
             outputTextarea.value = output.trim();
@@ -180,10 +180,15 @@
             const qualificationWinner = qualificationSelect.value;
             const fastestLapHolder = fastestLapSelect.value;
 
-            let output = outputTextarea.value;
+            const driversArray = Array.from(selectedDrivers);
+            let output = driversArray.join('\n');
+
+            if (driversArray.length > 0) {
+                output += '\n'; // Blank line after drivers
+            }
 
             if (qualificationWinner || fastestLapHolder) {
-                output += '\n\n'; // two blank lines before К and ЛК
+                output += '\n'; // Extra blank line before К/ЛК
             }
 
             if (qualificationWinner) {
