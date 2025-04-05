@@ -108,7 +108,7 @@
     </div>
 
     <script>
-        // Updated 2025 driver lineup (only last names in Russian)
+        // 2025 driver lineup (only last names in Russian)
         const drivers = [
             'Норрис', 'Пиастри', // McLaren
             'Леклер', 'Хэмилтон', // Ferrari
@@ -169,38 +169,37 @@
             const driversArray = Array.from(selectedDrivers);
             let output = '';
             driversArray.forEach(driver => {
-                output += `${driver}\n`;
+                output += `${driver}\r\n`; // <-- HARD line break
             });
 
             // Add a blank line after top drivers
             if (driversArray.length > 0) {
-                output += `\n`;
+                output += `\r\n`;
             }
 
             outputTextarea.value = output.trim();
         }
 
         function copyOutput() {
-            // Allow any number of drivers (no longer strict about 10)
             const qualificationWinner = qualificationSelect.value;
             const fastestLapHolder = fastestLapSelect.value;
 
             let output = outputTextarea.value;
 
-            // ✅ Add an extra blank line before "К" if any data follows
+            // Add two hard newlines if qualification or fastest lap selected
             if (qualificationWinner || fastestLapHolder) {
-                output += `\n\n`;
+                output += `\r\n\r\n`;
             }
 
             if (qualificationWinner) {
-                output += `К ${qualificationWinner}\n`;
+                output += `К ${qualificationWinner}\r\n`;
             }
 
             if (fastestLapHolder) {
                 output += `ЛК ${fastestLapHolder}`;
             }
 
-            // Final trim to clean up spacing
+            // Final trim to clean up
             outputTextarea.value = output.trim();
 
             // Copy to clipboard
