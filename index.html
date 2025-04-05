@@ -108,7 +108,7 @@
     </div>
 
     <script>
-        // Corrected 2025 driver lineup (with Аджар, fixed commas)
+        // 2025 driver lineup (keeping Аджар as requested)
         const drivers = [
             'Норрис', 'Пиастри', // McLaren
             'Леклер', 'Хэмилтон', // Ferrari
@@ -117,7 +117,7 @@
             'Стролл', 'Алонсо', // Aston Martin
             'Гасли', 'Дуэн', // Alpine
             'Окон', 'Беарман', // Haas
-            'Лоусон', 'Аджар', // Racing Bulls (Аджар as you requested)
+            'Лоусон', 'Аджар', // Racing Bulls
             'Албон', 'Сайнс', // Williams
             'Хюлькенберг', 'Бортолето' // Kick Sauber
         ];
@@ -170,20 +170,20 @@
             let output = driversArray.join('\n');
 
             if (driversArray.length > 0) {
-                output += '\n'; // One extra line after drivers
+                output += '\n'; // blank line after drivers
             }
 
             outputTextarea.value = output.trim();
         }
 
-        function copyOutput() {
+        async function copyOutput() {
             const qualificationWinner = qualificationSelect.value;
             const fastestLapHolder = fastestLapSelect.value;
 
             let output = outputTextarea.value;
 
             if (qualificationWinner || fastestLapHolder) {
-                output += '\n\n'; // Two blank lines before К and ЛК
+                output += '\n\n'; // two blank lines before К and ЛК
             }
 
             if (qualificationWinner) {
@@ -194,11 +194,13 @@
                 output += `ЛК ${fastestLapHolder}`;
             }
 
-            outputTextarea.value = output.trim();
-
-            outputTextarea.select();
-            document.execCommand('copy');
-            alert('Результат скопирован в буфер обмена.');
+            try {
+                await navigator.clipboard.writeText(output.trim());
+                alert('Результат скопирован в буфер обмена.');
+            } catch (err) {
+                console.error('Ошибка копирования:', err);
+                alert('Ошибка при копировании.');
+            }
         }
     </script>
 </body>
