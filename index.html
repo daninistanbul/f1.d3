@@ -108,7 +108,7 @@
     </div>
 
     <script>
-        // Driver lineup 2025 (with Аджар)
+        // Driver lineup 2025 (keeping Аджар)
         const drivers = [
             'Норрис', 'Пиастри', // McLaren
             'Леклер', 'Хэмилтон', // Ferrari
@@ -176,7 +176,7 @@
             outputTextarea.value = output.trim();
         }
 
-        async function copyOutput() {
+        function copyOutput() {
             const qualificationWinner = qualificationSelect.value;
             const fastestLapHolder = fastestLapSelect.value;
 
@@ -199,13 +199,15 @@
                 output += `ЛК ${fastestLapHolder}`;
             }
 
-            try {
-                await navigator.clipboard.writeText(output.trim());
-                alert('Результат скопирован в буфер обмена.');
-            } catch (err) {
-                console.error('Ошибка копирования:', err);
-                alert('Ошибка при копировании.');
-            }
+            // Write to textarea for copying
+            outputTextarea.value = output.trim();
+
+            // Select textarea content and copy
+            outputTextarea.focus();
+            outputTextarea.select();
+            document.execCommand('copy');
+
+            alert('Результат скопирован в буфер обмена.');
         }
     </script>
 </body>
