@@ -112,12 +112,12 @@
         const drivers = [
             'Норрис', 'Пиастри', // McLaren
             'Леклер', 'Хэмилтон', // Ferrari
-            'Ферстаппен', 'Лоусон', // Red Bull Racing
+            'Ферстаппен', 'Цунода', // Red Bull Racing
             'Расселл', 'Антонелли', // Mercedes
             'Стролл', 'Алонсо', // Aston Martin
             'Гасли', 'Дуэн', // Alpine
             'Окон', 'Беарман', // Haas
-            'Цунода', 'Хаджар', // Racing Bulls
+            'Лоусон', 'Аджар', // Racing Bulls
             'Албон', 'Сайнс', // Williams
             'Хюлькенберг', 'Бортолето' // Kick Sauber
         ];
@@ -171,41 +171,42 @@
             driversArray.forEach(driver => {
                 output += `${driver}\n`;
             });
-            outputTextarea.value = output;
+
+            // Add a blank line after top drivers
+            if (driversArray.length > 0) {
+                output += `\n`;
+            }
+
+            outputTextarea.value = output.trim();
         }
 
         function copyOutput() {
+            // Allow any number of drivers (no longer strict about 10)
             const qualificationWinner = qualificationSelect.value;
             const fastestLapHolder = fastestLapSelect.value;
 
-            let output = outputTextarea.value.trim();
-            
-            // Add two newlines before qualification/fastest lap if there are drivers
-            if (output && (qualificationWinner || fastestLapHolder)) {
-                output += '\n\n';
+            let output = outputTextarea.value;
+
+            // ✅ Add an extra blank line before "К" if any data follows
+            if (qualificationWinner || fastestLapHolder) {
+                output += `\n\n`;
             }
-            
+
             if (qualificationWinner) {
                 output += `К ${qualificationWinner}\n`;
             }
-            
+
             if (fastestLapHolder) {
                 output += `ЛК ${fastestLapHolder}`;
             }
 
+            // Final trim to clean up spacing
+            outputTextarea.value = output.trim();
+
             // Copy to clipboard
-            navigator.clipboard.writeText(output.trim())
-                .then(() => {
-                    alert('Результат скопирован в буфер обмена.');
-                })
-                .catch(err => {
-                    console.error('Failed to copy: ', err);
-                    // Fallback for older browsers
-                    outputTextarea.value = output.trim();
-                    outputTextarea.select();
-                    document.execCommand('copy');
-                    alert('Результат скопирован в буфер обмена.');
-                });
+            outputTextarea.select();
+            document.execCommand('copy');
+            alert('Результат скопирован в буфер обмена.');
         }
     </script>
 </body>
