@@ -108,16 +108,16 @@
     </div>
 
     <script>
-        // 2025 drivers (Аджар kept, COMMA FIXED)
+        // Updated 2025 driver lineup (only last names in Russian)
         const drivers = [
             'Норрис', 'Пиастри', // McLaren
             'Леклер', 'Хэмилтон', // Ferrari
-            'Ферстаппен', 'Цунода', // Red Bull Racing
+            'Ферстаппен', 'Лоусон', // Red Bull Racing
             'Расселл', 'Антонелли', // Mercedes
             'Стролл', 'Алонсо', // Aston Martin
             'Гасли', 'Дуэн', // Alpine
             'Окон', 'Беарман', // Haas
-            'Лоусон', 'Аджар', // Racing Bulls (✅ comma here!)
+            'Цунода', 'Хаджар', // Racing Bulls
             'Албон', 'Сайнс', // Williams
             'Хюлькенберг', 'Бортолето' // Kick Sauber
         ];
@@ -128,6 +128,7 @@
         const fastestLapSelect = document.getElementById('fastestLap');
         const outputTextarea = document.getElementById('output');
 
+        // Populate driver buttons
         drivers.forEach(driver => {
             const button = document.createElement('button');
             button.textContent = driver;
@@ -136,6 +137,7 @@
             driversList.appendChild(button);
         });
 
+        // Populate qualification and fastest lap selectors
         populateSelectOptions(qualificationSelect, drivers);
         populateSelectOptions(fastestLapSelect, drivers);
 
@@ -165,45 +167,45 @@
 
         function updateOutput() {
             const driversArray = Array.from(selectedDrivers);
-            let output = driversArray.join('\r\n'); // Use \r\n for hard line breaks
-
-            if (driversArray.length > 0) {
-                output += '\r\n'; // blank line after drivers
-            }
-
-            outputTextarea.value = output.trim();
+            let output = '';
+            driversArray.forEach(driver => {
+                output += `${driver}\n`;
+            });
+            outputTextarea.value = output;
         }
 
         function copyOutput() {
             const qualificationWinner = qualificationSelect.value;
             const fastestLapHolder = fastestLapSelect.value;
 
-            const driversArray = Array.from(selectedDrivers);
-            let output = driversArray.join('\r\n'); // again, \r\n for compatibility
-
-            if (driversArray.length > 0) {
-                output += '\r\n'; // blank line after drivers
+            let output = outputTextarea.value.trim();
+            
+            // Add two newlines before qualification/fastest lap if there are drivers
+            if (output && (qualificationWinner || fastestLapHolder)) {
+                output += '\n\n';
             }
-
-            if (qualificationWinner || fastestLapHolder) {
-                output += '\r\n'; // extra blank line before К/ЛК
-            }
-
+            
             if (qualificationWinner) {
-                output += `К ${qualificationWinner}\r\n`;
+                output += `К ${qualificationWinner}\n`;
             }
-
+            
             if (fastestLapHolder) {
                 output += `ЛК ${fastestLapHolder}`;
             }
 
-            outputTextarea.value = output.trim();
-
-            outputTextarea.focus();
-            outputTextarea.select();
-            document.execCommand('copy');
-
-            alert('Результат скопирован в буфер обмена.');
+            // Copy to clipboard
+            navigator.clipboard.writeText(output.trim())
+                .then(() => {
+                    alert('Результат скопирован в буфер обмена.');
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback for older browsers
+                    outputTextarea.value = output.trim();
+                    outputTextarea.select();
+                    document.execCommand('copy');
+                    alert('Результат скопирован в буфер обмена.');
+                });
         }
     </script>
 </body>
