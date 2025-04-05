@@ -108,7 +108,7 @@
     </div>
 
     <script>
-        // 2025 drivers (Аджар is correct)
+        // 2025 drivers (Аджар kept, COMMA FIXED)
         const drivers = [
             'Норрис', 'Пиастри', // McLaren
             'Леклер', 'Хэмилтон', // Ferrari
@@ -117,7 +117,7 @@
             'Стролл', 'Алонсо', // Aston Martin
             'Гасли', 'Дуэн', // Alpine
             'Окон', 'Беарман', // Haas
-            'Лоусон', 'Аджар', // Racing Bulls
+            'Лоусон', 'Аджар', // Racing Bulls (✅ comma here!)
             'Албон', 'Сайнс', // Williams
             'Хюлькенберг', 'Бортолето' // Kick Sauber
         ];
@@ -126,4 +126,85 @@
         const driversList = document.getElementById('driversList');
         const qualificationSelect = document.getElementById('qualification');
         const fastestLapSelect = document.getElementById('fastestLap');
-        const outputTextarea = document.getElementById('
+        const outputTextarea = document.getElementById('output');
+
+        drivers.forEach(driver => {
+            const button = document.createElement('button');
+            button.textContent = driver;
+            button.className = 'driver';
+            button.onclick = () => selectDriver(driver, button);
+            driversList.appendChild(button);
+        });
+
+        populateSelectOptions(qualificationSelect, drivers);
+        populateSelectOptions(fastestLapSelect, drivers);
+
+        function populateSelectOptions(selectElement, drivers) {
+            drivers.forEach(driver => {
+                const option = document.createElement('option');
+                option.value = driver;
+                option.textContent = driver;
+                selectElement.appendChild(option);
+            });
+        }
+
+        function selectDriver(driver, button) {
+            if (selectedDrivers.has(driver)) {
+                selectedDrivers.delete(driver);
+                button.classList.remove('selected');
+            } else {
+                if (selectedDrivers.size < 10) {
+                    selectedDrivers.add(driver);
+                    button.classList.add('selected');
+                } else {
+                    alert('Вы уже выбрали 10 гонщиков.');
+                }
+            }
+            updateOutput();
+        }
+
+        function updateOutput() {
+            const driversArray = Array.from(selectedDrivers);
+            let output = driversArray.join('\r\n'); // Use \r\n for hard line breaks
+
+            if (driversArray.length > 0) {
+                output += '\r\n'; // blank line after drivers
+            }
+
+            outputTextarea.value = output.trim();
+        }
+
+        function copyOutput() {
+            const qualificationWinner = qualificationSelect.value;
+            const fastestLapHolder = fastestLapSelect.value;
+
+            const driversArray = Array.from(selectedDrivers);
+            let output = driversArray.join('\r\n'); // again, \r\n for compatibility
+
+            if (driversArray.length > 0) {
+                output += '\r\n'; // blank line after drivers
+            }
+
+            if (qualificationWinner || fastestLapHolder) {
+                output += '\r\n'; // extra blank line before К/ЛК
+            }
+
+            if (qualificationWinner) {
+                output += `К ${qualificationWinner}\r\n`;
+            }
+
+            if (fastestLapHolder) {
+                output += `ЛК ${fastestLapHolder}`;
+            }
+
+            outputTextarea.value = output.trim();
+
+            outputTextarea.focus();
+            outputTextarea.select();
+            document.execCommand('copy');
+
+            alert('Результат скопирован в буфер обмена.');
+        }
+    </script>
+</body>
+</html>
