@@ -30,7 +30,7 @@
         .drivers-list {
             display: flex;
             flex-direction: column;
-            gap: 2px; /* Small gap between buttons */
+            gap: 2px;
             margin-right: 20px;
         }
         .driver {
@@ -66,7 +66,7 @@
             resize: none;
             height: 180px;
             font-size: 14px;
-            white-space: pre-wrap; /* Important for newlines */
+            white-space: pre-wrap;
         }
         button {
             padding: 10px;
@@ -108,7 +108,7 @@
     </div>
 
     <script>
-        // Driver lineup 2025, last names only (corrected)
+        // Corrected 2025 driver lineup (with Аджар, fixed commas)
         const drivers = [
             'Норрис', 'Пиастри', // McLaren
             'Леклер', 'Хэмилтон', // Ferrari
@@ -117,7 +117,7 @@
             'Стролл', 'Алонсо', // Aston Martin
             'Гасли', 'Дуэн', // Alpine
             'Окон', 'Беарман', // Haas
-            'Лоусон', 'Аджар', // Racing Bulls
+            'Лоусон', 'Аджар', // Racing Bulls (Аджар as you requested)
             'Албон', 'Сайнс', // Williams
             'Хюлькенберг', 'Бортолето' // Kick Sauber
         ];
@@ -152,4 +152,54 @@
 
         function selectDriver(driver, button) {
             if (selectedDrivers.has(driver)) {
-                selected
+                selectedDrivers.delete(driver);
+                button.classList.remove('selected');
+            } else {
+                if (selectedDrivers.size < 10) {
+                    selectedDrivers.add(driver);
+                    button.classList.add('selected');
+                } else {
+                    alert('Вы уже выбрали 10 гонщиков.');
+                }
+            }
+            updateOutput();
+        }
+
+        function updateOutput() {
+            const driversArray = Array.from(selectedDrivers);
+            let output = driversArray.join('\n');
+
+            if (driversArray.length > 0) {
+                output += '\n'; // One extra line after drivers
+            }
+
+            outputTextarea.value = output.trim();
+        }
+
+        function copyOutput() {
+            const qualificationWinner = qualificationSelect.value;
+            const fastestLapHolder = fastestLapSelect.value;
+
+            let output = outputTextarea.value;
+
+            if (qualificationWinner || fastestLapHolder) {
+                output += '\n\n'; // Two blank lines before К and ЛК
+            }
+
+            if (qualificationWinner) {
+                output += `К ${qualificationWinner}\n`;
+            }
+
+            if (fastestLapHolder) {
+                output += `ЛК ${fastestLapHolder}`;
+            }
+
+            outputTextarea.value = output.trim();
+
+            outputTextarea.select();
+            document.execCommand('copy');
+            alert('Результат скопирован в буфер обмена.');
+        }
+    </script>
+</body>
+</html>
